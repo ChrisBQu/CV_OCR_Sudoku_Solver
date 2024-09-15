@@ -20,16 +20,22 @@ def solveSudoku(puzzle_arr):
 def isValidSudoku(board, row, col, num):
     # Check the row
     for i in range(9):
-        if board[row * 9 + i] == num: return False
+        if board[row * 9 + i] == num:
+            return False
+
     # Check the column
     for i in range(9):
-        if board[i * 9 + col] == num: return False
+        if board[i * 9 + col] == num:
+            return False
+
     # Check the 3x3 subgrid
     start_row = (row // 3) * 3
     start_col = (col // 3) * 3
     for i in range(3):
         for j in range(3):
-            if board[(start_row + i) * 9 + (start_col + j)] == num: return False
+            if board[(start_row + i) * 9 + (start_col + j)] == num:
+                return False
+
     return True
 
 #-- Print board to console

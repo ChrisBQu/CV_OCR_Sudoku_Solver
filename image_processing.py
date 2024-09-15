@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import easyocr
-import os
 
 #-- Preprocess the image so that it is a clean black and white image
 #-- that the puzzle can be extracted from
@@ -85,11 +84,11 @@ def sortRectanglePoints(pts):
 #-- length 81 representing the Sudoku board that was read in from the image
 def detectNumbers(img, verbose=False):
 
-    # Enlarge the image slightly for better detection
+    # Enlarge and blur the image slightly for better detection
     copied = img.copy()
     height, width = img.shape[:2]
     copied = cv2.resize(img, (int(1.5*width) ,int(1.5*height)), interpolation=cv2.INTER_LINEAR)
-
+    copied = cv2.blur(copied, (11,11))
     # Divide the image into 81 cells
     buckets = [0] * 81
     height, width = copied.shape[:2]
@@ -109,8 +108,7 @@ def detectNumbers(img, verbose=False):
         row = center_y // cell_height
         # Store the detected value in the appropriate bucket
         bucket_index = row * 9 + col
-        value = each[1]
+        value = int(each[1])
         buckets[bucket_index] = value
         if verbose: print(f"Detected value '{value}' at bucket {bucket_index} (row {row}, col {col})")
-    os.remove('temp_image.png')
     return buckets 
